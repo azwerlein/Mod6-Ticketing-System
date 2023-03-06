@@ -16,7 +16,7 @@
                 choice = Console.ReadLine();
                 if (choice == "1")
                 {
-
+                    Console.WriteLine("Reading tickets...");
                 }
                 else if (choice == "2")
                 {

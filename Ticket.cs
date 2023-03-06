@@ -15,6 +15,7 @@ public class Ticket
         this.Number = Number;
         this.Summary = Summary;
         this.Status = Status;
+        this.Priority = Priority;
         this.Submitter = Submitter;
         this.Assigned = Assigned;
         this.Watching = Watching;
@@ -24,7 +25,7 @@ public class Ticket
     {
         string parsedAssigned = string.Join('|', Assigned);
         string parsedWatching = string.Join('|', Watching);
-        return $"{Number}, {Summary}, {Status}, {Submitter}, {parsedAssigned}, {parsedWatching}";
+        return $"{Number}, {Summary}, {Status}, {Priority}, {Submitter}, {parsedAssigned}, {parsedWatching}";
     }
 
     public static Ticket Deserialize(string input)
