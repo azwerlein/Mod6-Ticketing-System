@@ -1,8 +1,7 @@
-﻿namespace Mod1
+﻿namespace Mod6
 {
     static class Program
     {
-
         static void Main(string[] args)
         {
             string file = "Tickets.csv";
@@ -20,7 +19,9 @@
                 }
                 else if (choice == "2")
                 {
-                    writeTickets(file);
+                    Console.WriteLine("Overwrite existing data? (Y/N)");
+                    bool overwrite = Console.ReadLine().ToUpper() == "Y";
+                    writeTickets(file, overwrite);
                 }
 
             } while (choice == "1" | choice == "2");
@@ -41,9 +42,9 @@
             sr.Close();
         }
 
-        private static void writeTickets(string file)
+        private static void writeTickets(string file, bool overwrite)
         {
-            StreamWriter sw = new StreamWriter(file);
+            StreamWriter sw = new StreamWriter(file, !overwrite);
             do
             {
                 Console.WriteLine("Create a new ticket? (Y/N)");
