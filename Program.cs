@@ -5,8 +5,8 @@
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello!");
-            StreamWriter sw = new StreamWriter("Tickets.csv");
+            string file = "Tickets.csv";
+            Console.WriteLine("Welcome!");
             string? choice;
             do
             {
@@ -17,9 +17,16 @@
                 if (choice == "1")
                 {
                     Console.WriteLine("Reading tickets...");
+                    StreamReader sr = new StreamReader(file);
+                    while (!sr.EndOfStream)
+                    {
+                        Console.WriteLine(sr.ReadLine());
+                    }
+                    sr.Close();
                 }
                 else if (choice == "2")
                 {
+                    StreamWriter sw = new StreamWriter(file);
                     do
                     {
                         Console.WriteLine("Create a new ticket? (Y/N)");
@@ -69,11 +76,11 @@
                         sw.WriteLine(ticket.Serialize());
                         Console.WriteLine("Ticket created!");
                     } while (true);
+
+                    sw.Close();
                 }
 
             } while (choice == "1" | choice == "2");
-
-            sw.Close();
 
             Console.WriteLine("Have a nice day!");
         }
