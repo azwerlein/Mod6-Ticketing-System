@@ -16,13 +16,7 @@
                 choice = Console.ReadLine();
                 if (choice == "1")
                 {
-                    Console.WriteLine("Reading tickets...");
-                    StreamReader sr = new StreamReader(file);
-                    while (!sr.EndOfStream)
-                    {
-                        Console.WriteLine(sr.ReadLine());
-                    }
-                    sr.Close();
+                    readTickets(file);
                 }
                 else if (choice == "2")
                 {
@@ -83,6 +77,19 @@
             } while (choice == "1" | choice == "2");
 
             Console.WriteLine("Have a nice day!");
+        }
+
+        private static void readTickets(string file)
+        {
+            Console.WriteLine("Reading tickets...");
+            StreamReader sr = new StreamReader(file);
+            List<Ticket> lines = new List<Ticket>();
+            while (!sr.EndOfStream)
+            {
+                lines.Add(Ticket.Deserialize(sr.ReadLine()));
+            }
+            lines.ForEach(ticket => Console.WriteLine(ticket.ToString()));
+            sr.Close();
         }
     }
 }

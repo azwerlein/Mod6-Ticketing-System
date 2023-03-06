@@ -36,4 +36,11 @@ public class Ticket
 
         return new Ticket(int.Parse(substrings[0]), substrings[1], substrings[2], substrings[3], substrings[4], assigned, watching);
     }
+
+    public override string ToString()
+    {
+        string parsedAssigned = string.Join(", ", Assigned);
+        string parsedWatching = string.Join(", ", Watching);
+        return $"ID: {Number}, Description: {Summary}, Status: {Status}, Priority: {Priority}, Submitter: {Submitter}, Assigned: {parsedAssigned}, Watching: {parsedWatching}";
+    }
 }
