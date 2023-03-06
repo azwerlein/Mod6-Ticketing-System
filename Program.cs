@@ -30,8 +30,20 @@
                             break;
                         }
 
-                        Console.WriteLine("Ticket Number:");
-                        string id = Console.ReadLine();
+                        Ticket Ticket = new Ticket();
+
+                        int number;
+                        bool validEntry = false;
+                        do
+                        {
+                            Console.WriteLine("Ticket Number:");
+                            string id = Console.ReadLine();
+                            validEntry = int.TryParse(id, out number);
+                            if (!validEntry)
+                            {
+                                Console.WriteLine($"{id} is not a valid number!");
+                            }
+                        } while (!validEntry);
 
                         Console.WriteLine("Summary:");
                         string summary = Console.ReadLine();
@@ -46,17 +58,20 @@
                         string submitter = Console.ReadLine();
 
                         Console.WriteLine("Assigned:");
-                        string assigned = Console.ReadLine();
+                        string assignedInput = Console.ReadLine();
+                        string[] assigned = assignedInput.Split('|', ',', ';');
 
                         Console.WriteLine("Watching:");
-                        string watching = Console.ReadLine();
+                        string watchingInput = Console.ReadLine();
+                        string[] watching = watchingInput.Split('|', ',', ';');
 
-                        sw.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}", id, summary, status, priority, submitter, assigned);
+                        Ticket ticket = new Ticket(number, summary, status, priority, submitter, assigned, watching);
+                        sw.WriteLine(ticket.Serialize());
                         Console.WriteLine("Ticket created!");
                     } while (true);
                 }
 
-            } while (choice != "1" & choice != "2");
+            } while (choice == "1" | choice == "2");
 
             sw.Close();
 
