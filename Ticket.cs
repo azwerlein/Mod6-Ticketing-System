@@ -26,4 +26,13 @@ public class Ticket
         string parsedWatching = string.Join('|', Watching);
         return $"{Number}, {Summary}, {Status}, {Submitter}, {parsedAssigned}, {parsedWatching}";
     }
+
+    public static Ticket Deserialize(string input)
+    {
+        string[] substrings = input.Split(',');
+        string[] assigned = substrings[5].Split('|');
+        string[] watching = substrings[6].Split('|');
+
+        return new Ticket(int.Parse(substrings[0]), substrings[1], substrings[2], substrings[3], substrings[4], assigned, watching);
+    }
 }
