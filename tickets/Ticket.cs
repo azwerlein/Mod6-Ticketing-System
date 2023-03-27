@@ -1,12 +1,12 @@
 public class Ticket
 {
-    public int Number { get; set; }
-    public string Summary { get; set; }
-    public string Status { get; set; }
-    public string Priority { get; set; }
-    public string Submitter { get; set; }
-    public string[] Assigned { get; set; }
-    public string[] Watching { get; set; }
+    protected int Number { get; set; }
+    protected string Summary { get; set; }
+    protected string Status { get; set; }
+    protected string Priority { get; set; }
+    protected string Submitter { get; set; }
+    protected string[] Assigned { get; set; }
+    protected string[] Watching { get; set; }
 
     public Ticket() {}
 
