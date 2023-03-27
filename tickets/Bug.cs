@@ -9,19 +9,19 @@ public class Bug : Ticket
         Severity = Console.ReadLine();
     }
 
-    public string Serialize()
+    public override string Serialize()
     {
         return base.Serialize() + $", {Severity}";
     }
 
     public override string ToString()
     {
-        base.ToString() + $"Severity: {Severity}";
+        return base.ToString() + $"Severity: {Severity}";
     }
 
-    public static class Reader : IReader
+    public class Reader : IReader
     {
-        public Bug ReadLine(string input)
+        public Ticket ReadLine(string input)
         {
             Bug bug = new Bug();
             Ticket.Deserialize(bug, input);

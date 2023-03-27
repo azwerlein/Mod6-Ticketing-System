@@ -21,7 +21,7 @@ public abstract class Ticket
         this.Watching = Watching;
     }
 
-    public void ReadFromConsole()
+    public virtual void ReadFromConsole()
     {
         int number;
         bool validEntry = false;
@@ -59,7 +59,7 @@ public abstract class Ticket
         this.setAll(number, summary, status, priority, submitter, assigned, watching);
     }
 
-    public string Serialize()
+    public virtual string Serialize()
     {
         string parsedAssigned = string.Join('|', Assigned);
         string parsedWatching = string.Join('|', Watching);
@@ -82,7 +82,7 @@ public abstract class Ticket
         return $"ID: {Number}, Description: {Summary}, Status: {Status}, Priority: {Priority}, Submitter: {Submitter}, Assigned: {parsedAssigned}, Watching: {parsedWatching}, ";
     }
 
-    public static interface IReader
+    public interface IReader
     {
         Ticket ReadLine(string input);
     }

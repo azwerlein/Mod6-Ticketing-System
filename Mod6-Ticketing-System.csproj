@@ -5,11 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Mod6_Ticketing_System</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.2" />
-  </ItemGroup>
 
 </Project>

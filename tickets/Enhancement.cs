@@ -1,4 +1,4 @@
-public class Enhancement : Ticket
+public class Task : Ticket
 {
     protected string ProjectName { get; set; }
     protected string DueDate { get; set; }
@@ -13,26 +13,26 @@ public class Enhancement : Ticket
         DueDate = Console.ReadLine();
     }
 
-    public string Serialize()
+    public override string Serialize()
     {
         return base.Serialize() + $", {ProjectName}, {DueDate}";
     }
 
     public override string ToString()
     {
-        base.ToString() + $"Project Name: {ProjectName}, Due Date: {DueDate}";
+        return base.ToString() + $"Project Name: {ProjectName}, Due Date: {DueDate}";
     }
 
-    public static class Reader : IReader
+    public class Reader : IReader
     {
-        public Enhancement ReadLine(string input)
+        public Ticket ReadLine(string input)
         {
-            Enhancement enhancement = new Enhancement();
-            Ticket.Deserialize(enhancement, input);
+            Task task = new Task();
+            Ticket.Deserialize(task, input);
             string[] substrings = input.Split(',');
-            enhancement.ProjectName = substrings[7];
-            enhancement.DueDate = substrings[8];
-            return enhancement;
+            task.ProjectName = substrings[7];
+            task.DueDate = substrings[8];
+            return task;
         }
     }
 }

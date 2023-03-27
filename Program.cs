@@ -20,6 +20,7 @@
                     readTickets(new Bug.Reader(), bugFile);
                     readTickets(new Enhancement.Reader(), enhancementFile);
                     readTickets(new Task.Reader(), taskFile);
+                    Console.WriteLine("\n");
                 }
                 else if (choice == "2")
                 {
@@ -62,13 +63,12 @@
                 Console.WriteLine("3) Task");
                 response = Console.ReadLine();
 
-                Ticket? ticket;
-                StreamWriter? sw;
+                Ticket? ticket = null;
+                StreamWriter? sw = null;
 
                 switch (response)
                 {
                     case null:
-                        ticket = null;
                         break;
                     case "1":
                         ticket = new Bug();
