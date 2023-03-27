@@ -2,9 +2,11 @@
 {
     static class Program
     {
+        public static string bugFile = "Tickets.csv";
+        public static string enhancementFile = "Enhancements.csv";
+        public static string taskFile = "Tasks.csv";
         static void Main(string[] args)
         {
-            string file = "Tickets.csv";
             Console.WriteLine("Welcome!");
             string? choice;
             do
@@ -15,13 +17,13 @@
                 choice = Console.ReadLine();
                 if (choice == "1")
                 {
-                    readTickets(file);
+                    readTickets(new Bug.Reader(), bugFile);
+                    readTickets(new Enhancement.Reader(), enhancementFile);
+                    readTickets(new Task.Reader(), taskFile);
                 }
                 else if (choice == "2")
                 {
-                    Console.WriteLine("Overwrite existing data? (Y/N)");
-                    bool overwrite = Console.ReadLine().ToUpper() == "Y";
-                    writeTickets(file, overwrite);
+                    writeTickets();
                 }
 
             } while (choice == "1" | choice == "2");
@@ -29,22 +31,21 @@
             Console.WriteLine("Have a nice day!");
         }
 
-        private static void readTickets(string file)
+        private static void readTickets(Ticket.IReader reader, string file)
         {
-            Console.WriteLine("Reading tickets...");
+            Console.WriteLine("Reading from: " + file);
             StreamReader sr = new StreamReader(file);
             List<Ticket> lines = new List<Ticket>();
             while (!sr.EndOfStream)
             {
-                lines.Add(Ticket.Deserialize(sr.ReadLine()));
+                lines.Add(reader.ReadLine(sr.ReadLine()));
             }
             lines.ForEach(ticket => Console.WriteLine(ticket.ToString()));
             sr.Close();
         }
 
-        private static void writeTickets(string file, bool overwrite)
+        private static void writeTickets()
         {
-            StreamWriter sw = new StreamWriter(file, !overwrite);
             do
             {
                 Console.WriteLine("Create a new ticket? (Y/N)");
@@ -55,47 +56,44 @@
                     break;
                 }
 
-                Ticket Ticket = new Ticket();
+                Console.WriteLine("What type of ticket?");
+                Console.WriteLine("1) Bug/Defect");
+                Console.WriteLine("2) Enhancement");
+                Console.WriteLine("3) Task");
+                response = Console.ReadLine();
 
-                int number;
-                bool validEntry = false;
-                do
+                Ticket? ticket;
+                StreamWriter? sw;
+
+                switch (response)
                 {
-                    Console.WriteLine("Ticket Number:");
-                    string id = Console.ReadLine();
-                    validEntry = int.TryParse(id, out number);
-                    if (!validEntry)
-                    {
-                        Console.WriteLine($"{id} is not a valid number!");
-                    }
-                } while (!validEntry);
+                    case null:
+                        ticket = null;
+                        break;
+                    case "1":
+                        ticket = new Bug();
+                        sw = new StreamWriter(bugFile, true);
+                        break;
+                    case "2":
+                        ticket = new Enhancement();
+                        sw = new StreamWriter(enhancementFile, true);
+                        break;
+                    case "3":
+                        ticket = new Task();
+                        sw = new StreamWriter(taskFile, true);
+                        break;
+                }
 
-                Console.WriteLine("Summary:");
-                string summary = Console.ReadLine();
-
-                Console.WriteLine("Status:");
-                string status = Console.ReadLine();
-
-                Console.WriteLine("Priority:");
-                string priority = Console.ReadLine();
-
-                Console.WriteLine("Submitter:");
-                string submitter = Console.ReadLine();
-
-                Console.WriteLine("Assigned:");
-                string assignedInput = Console.ReadLine();
-                string[] assigned = assignedInput.Split('|', ',', ';');
-
-                Console.WriteLine("Watching:");
-                string watchingInput = Console.ReadLine();
-                string[] watching = watchingInput.Split('|', ',', ';');
-
-                Ticket ticket = new Ticket(number, summary, status, priority, submitter, assigned, watching);
+                if (ticket == null || sw == null)
+                {
+                    Console.WriteLine("Invalid response!");
+                    continue;
+                }
                 sw.WriteLine(ticket.Serialize());
                 Console.WriteLine("Ticket created!");
+                sw.Close();
             } while (true);
 
-            sw.Close();
         }
     }
 }
