@@ -89,6 +89,7 @@
                     Console.WriteLine("Invalid response!");
                     continue;
                 }
+                ticket.ReadFromConsole();
                 sw.WriteLine(ticket.Serialize());
                 Console.WriteLine("Ticket created!");
                 sw.Close();
