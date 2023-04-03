@@ -1,14 +1,12 @@
 public abstract class Ticket
 {
-    protected int Number { get; set; }
-    protected string Summary { get; set; }
-    protected string Status { get; set; }
-    protected string Priority { get; set; }
-    protected string Submitter { get; set; }
-    protected string[] Assigned { get; set; }
-    protected string[] Watching { get; set; }
-
-    public Ticket() { }
+    public int Number { get; set; }
+    public string Summary { get; set; }
+    public string Status { get; set; }
+    public string Priority { get; set; }
+    public string Submitter { get; set; }
+    public string[] Assigned { get; set; }
+    public string[] Watching { get; set; }
 
     public void setAll(int Number, string Summary, string Status, string Priority, string Submitter, string[] Assigned, string[] Watching)
     {
@@ -63,7 +61,7 @@ public abstract class Ticket
     {
         string parsedAssigned = string.Join('|', Assigned);
         string parsedWatching = string.Join('|', Watching);
-        return $"{Number}, {Summary}, {Status}, {Priority}, {Submitter}, {parsedAssigned}, {parsedWatching}";
+        return $"{Number},{Summary},{Status},{Priority},{Submitter},{parsedAssigned},{parsedWatching}";
     }
 
     public static void Deserialize(Ticket ticket, string input)
@@ -75,11 +73,13 @@ public abstract class Ticket
         ticket.setAll(int.Parse(substrings[0]), substrings[1], substrings[2], substrings[3], substrings[4], assigned, watching);
     }
 
+    public abstract string Type();
+
     public override string ToString()
     {
         string parsedAssigned = string.Join(", ", Assigned);
         string parsedWatching = string.Join(", ", Watching);
-        return $"ID: {Number}, Description: {Summary}, Status: {Status}, Priority: {Priority}, Submitter: {Submitter}, Assigned: {parsedAssigned}, Watching: {parsedWatching}, ";
+        return $"{Type()}: ID: {Number}, Description: {Summary}, Status: {Status}, Priority: {Priority}, Submitter: {Submitter}, Assigned: {parsedAssigned}, Watching: {parsedWatching}, ";
     }
 
     public interface IReader<T> where T : Ticket

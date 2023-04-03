@@ -1,7 +1,7 @@
 public class Task : Ticket
 {
-    protected string ProjectName { get; set; }
-    protected string DueDate { get; set; }
+    public string ProjectName { get; set; }
+    public string DueDate { get; set; }
 
     public override void ReadFromConsole()
     {
@@ -16,6 +16,11 @@ public class Task : Ticket
     public override string Serialize()
     {
         return base.Serialize() + $", {ProjectName}, {DueDate}";
+    }
+
+    public override string Type()
+    {
+        return "Task";
     }
 
     public override string ToString()

@@ -1,9 +1,9 @@
 public class Enhancement : Ticket
 {
-    protected string Software { get; set; }
-    protected string Cost { get; set; }
-    protected string Reason { get; set; }
-    protected string Estimate { get; set; }
+    public string Software { get; set; }
+    public string Cost { get; set; }
+    public string Reason { get; set; }
+    public string Estimate { get; set; }
 
     public override void ReadFromConsole()
     {
@@ -24,6 +24,11 @@ public class Enhancement : Ticket
     public override string Serialize()
     {
         return base.Serialize() + $", {Software}, {Cost}, {Reason}, {Estimate}";
+    }
+
+    public override string Type()
+    {
+        return "Enhancement";
     }
 
     public override string ToString()

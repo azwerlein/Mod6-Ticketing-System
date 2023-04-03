@@ -20,18 +20,17 @@ public class TicketHandler
 
     public void readAllTickets()
     {
-        readTickets(new Bug.Reader(), bugFile);
-        readTickets(new Enhancement.Reader(), enhancementFile);
-        readTickets(new Task.Reader(), taskFile);
+        Bugs = readTickets(new Bug.Reader(), bugFile);
+        Enhancements = readTickets(new Enhancement.Reader(), enhancementFile);
+        Tasks = readTickets(new Task.Reader(), taskFile);
     }
 
-    private void readTickets<T>(Ticket.IReader<T> reader, string file) where T : Ticket
+    private List<T> readTickets<T>(Ticket.IReader<T> reader, string file) where T : Ticket
     {
         Console.WriteLine("Reading from: " + file);
-        StreamReader sr = new StreamReader(file);
-        List<T> list = reader.ReadLines(sr);
+        List<T> list = refreshTickets(reader, file);
         list.ForEach(ticket => Console.WriteLine(ticket.ToString()));
-        sr.Close();
+        return list;
     }
 
     public void writeTickets()
@@ -84,5 +83,60 @@ public class TicketHandler
             sw.Close();
         } while (true);
 
+    }
+
+    public void searchTickets()
+    {
+        refreshAllTickets();
+
+        Console.WriteLine("Please select a search criterion.");
+        Console.WriteLine("1) Status");
+        Console.WriteLine("2) Priority");
+        Console.WriteLine("3) Submitter");
+        string response = Console.ReadLine().ToLower();
+
+        Console.WriteLine("Please enter a search term");
+        string term = Console.ReadLine().ToLower();
+
+        Func<Ticket, bool> criterion;
+        if (response == "1" | response == "status")
+        {
+            criterion = ticket => ticket.Status.ToLower() == term;
+        }
+        else if (response == "2" | response == "priority")
+        {
+            criterion = ticket => ticket.Priority.ToLower() == term;
+        }
+        else if (response == "3" | response == "submitter")
+        {
+            criterion = ticket => ticket.Submitter.ToLower() == term;
+        }
+        else
+        {
+            Console.WriteLine("Invalid search criterion! \n");
+            return;
+        }
+
+        var results = Bugs.Where(criterion).Concat(Enhancements.Where(criterion)).Concat(Tasks.Where(criterion));
+        Console.WriteLine($"Search results: {results.Count()}");
+        foreach (var ticket in results)
+        {
+            Console.WriteLine(ticket);
+        }
+    }
+
+    private void refreshAllTickets()
+    {
+        Bugs = refreshTickets(new Bug.Reader(), bugFile);
+        Enhancements = refreshTickets(new Enhancement.Reader(), enhancementFile);
+        Tasks = refreshTickets(new Task.Reader(), taskFile);
+    }
+
+    private List<T> refreshTickets<T>(Ticket.IReader<T> reader, string file) where T : Ticket
+    {
+        StreamReader sr = new StreamReader(file);
+        List<T> list = reader.ReadLines(sr);
+        sr.Close();
+        return list;
     }
 }

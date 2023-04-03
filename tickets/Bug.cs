@@ -1,6 +1,6 @@
 public class Bug : Ticket
 {
-    protected string Severity { get; set; }
+    public string Severity { get; set; }
 
     public override void ReadFromConsole()
     {
@@ -12,6 +12,11 @@ public class Bug : Ticket
     public override string Serialize()
     {
         return base.Serialize() + $", {Severity}";
+    }
+
+    public override string Type()
+    {
+        return "Bug";
     }
 
     public override string ToString()

@@ -1,1 +1,2 @@
-1, Add NLog to the project, Open, Medium, Archie, None, None, NLog, $0, Easier debugging, N/A
+1,Add NLog to the project,Open,Medium,Archie,None,None,NLog,$0,Easier debugging,N/A
+3,Allow the system to automatically number tickets,Open,Low,Archie,Archie,Archie, Ticketing System, $0, Convenience, N/A
