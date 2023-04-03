@@ -5,6 +5,8 @@ public class TicketHandler
     public string taskFile { get; set; }
 
     public List<Bug> Bugs { get; set; }
+    public List<Enhancement> Enhancements { get; set; }
+    public List<Task> Tasks { get; set; }
 
     public TicketHandler(string bugPath, string enhancementPath, string taskPath)
     {
@@ -12,6 +14,8 @@ public class TicketHandler
         enhancementFile = enhancementPath;
         taskFile = taskPath;
         Bugs = new List<Bug>();
+        Enhancements = new List<Enhancement>();
+        Tasks = new List<Task>();
     }
 
     public void readAllTickets()
@@ -21,16 +25,12 @@ public class TicketHandler
         readTickets(new Task.Reader(), taskFile);
     }
 
-    private void readTickets(Ticket.IReader reader, string file)
+    private void readTickets<T>(Ticket.IReader<T> reader, string file) where T : Ticket
     {
         Console.WriteLine("Reading from: " + file);
         StreamReader sr = new StreamReader(file);
-        List<Ticket> lines = new List<Ticket>();
-        while (!sr.EndOfStream)
-        {
-            lines.Add(reader.ReadLine(sr.ReadLine()));
-        }
-        lines.ForEach(ticket => Console.WriteLine(ticket.ToString()));
+        List<T> list = reader.ReadLines(sr);
+        list.ForEach(ticket => Console.WriteLine(ticket.ToString()));
         sr.Close();
     }
 

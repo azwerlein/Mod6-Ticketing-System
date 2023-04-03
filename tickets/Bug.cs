@@ -19,15 +19,21 @@ public class Bug : Ticket
         return base.ToString() + $"Severity: {Severity}";
     }
 
-    public class Reader : IReader
+    public class Reader : IReader<Bug>
     {
-        public Ticket ReadLine(string input)
+        public List<Bug> ReadLines(StreamReader sr)
         {
-            Bug bug = new Bug();
-            Ticket.Deserialize(bug, input);
-            string[] substrings = input.Split(',');
-            bug.Severity = substrings[7];
-            return bug;
+            List<Bug> list = new List<Bug>();
+            while (!sr.EndOfStream)
+            {
+                String input = sr.ReadLine();
+                Bug bug = new Bug();
+                Ticket.Deserialize(bug, input);
+                string[] substrings = input.Split(',');
+                bug.Severity = substrings[7];
+                list.Add(bug);
+            }
+            return list;
         }
     }
 }

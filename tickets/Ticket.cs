@@ -82,8 +82,8 @@ public abstract class Ticket
         return $"ID: {Number}, Description: {Summary}, Status: {Status}, Priority: {Priority}, Submitter: {Submitter}, Assigned: {parsedAssigned}, Watching: {parsedWatching}, ";
     }
 
-    public interface IReader
+    public interface IReader<T> where T : Ticket
     {
-        Ticket ReadLine(string input);
+        List<T> ReadLines(StreamReader sr);
     }
 }

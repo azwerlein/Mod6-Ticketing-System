@@ -1,38 +1,54 @@
-public class Task : Ticket
+public class Enhancement : Ticket
 {
-    protected string ProjectName { get; set; }
-    protected string DueDate { get; set; }
-    
+    protected string Software { get; set; }
+    protected string Cost { get; set; }
+    protected string Reason { get; set; }
+    protected string Estimate { get; set; }
+
     public override void ReadFromConsole()
     {
         base.ReadFromConsole();
-        Console.WriteLine("Project Name:");
-        ProjectName = Console.ReadLine();
+        Console.WriteLine("Software:");
+        Software = Console.ReadLine();
 
-        Console.WriteLine("Due Date:");
-        DueDate = Console.ReadLine();
+        Console.WriteLine("Cost:");
+        Cost = Console.ReadLine();
+
+        Console.WriteLine("Reason:");
+        Reason = Console.ReadLine();
+
+        Console.WriteLine("Estimate:");
+        Estimate = Console.ReadLine();
     }
 
     public override string Serialize()
     {
-        return base.Serialize() + $", {ProjectName}, {DueDate}";
+        return base.Serialize() + $", {Software}, {Cost}, {Reason}, {Estimate}";
     }
 
     public override string ToString()
     {
-        return base.ToString() + $"Project Name: {ProjectName}, Due Date: {DueDate}";
+        return base.ToString() + $"Software: {Software}, Cost: {Cost}, Reason: {Reason}, Estimate: {Estimate}";
     }
 
-    public class Reader : IReader
+    public class Reader : IReader<Enhancement>
     {
-        public Ticket ReadLine(string input)
+        public List<Enhancement> ReadLines(StreamReader sr)
         {
-            Task task = new Task();
-            Ticket.Deserialize(task, input);
-            string[] substrings = input.Split(',');
-            task.ProjectName = substrings[7];
-            task.DueDate = substrings[8];
-            return task;
+            List<Enhancement> list = new List<Enhancement>();
+            while (!sr.EndOfStream)
+            {
+                string input = sr.ReadLine();
+                Enhancement enhancement = new Enhancement();
+                Ticket.Deserialize(enhancement, input);
+                string[] substrings = input.Split(',');
+                enhancement.Software = substrings[7];
+                enhancement.Cost = substrings[8];
+                enhancement.Reason = substrings[9];
+                enhancement.Estimate = substrings[10];
+                list.Add(enhancement);
+            }
+            return list;
         }
     }
 }
